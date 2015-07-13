@@ -1,0 +1,11 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="bm.ui.RootPaneController"
+          alignment="center" hgap="10" vgap="10">
+
+  <StackPane>
+    <fx:include source="/bm/ui/MenuPane.fxml"/>
+    <fx:include source="/bm/ui/InGamePane.fxml"/>
+  </StackPane>
+</GridPane>

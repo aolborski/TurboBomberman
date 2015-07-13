@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.*?>
+<Pane fx:id="inGamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0"
+      visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bm.ui.InGamePaneController">
+  <children>
+    <GridPane layoutY="-1.0" prefHeight="600.0" prefWidth="800.0">
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1191.0" minWidth="10.0" prefWidth="1121.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="634.0" minWidth="10.0" prefWidth="159.0"/>
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints maxHeight="728.0" minHeight="10.0" prefHeight="568.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="390.0" minHeight="10.0" prefHeight="232.0" vgrow="SOMETIMES"/>
+      </rowConstraints>
+      <children>
+        <fx:include source="GameWorldPane.fxml"/>
+
+        <Button fx:id="backToMenuButton" focusTraversable="false" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onBackToMenu" prefHeight="70.0" prefWidth="460.0"
+                text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+      </children>
+    </GridPane>
+  </children>
+</Pane>

@@ -10,7 +10,7 @@ import static bm.Constants.RELEASE_FAST_FPS;
 import static javafx.animation.Animation.INDEFINITE;
 
 /**
- * Class GameLoop is responsible for build and set game loop and start this.
+ * Class GameLoop is responsible for build and set game loop and start it.
  */
 @Component
 public class GameLoop {
@@ -36,13 +36,7 @@ public class GameLoop {
     private void buildAndSetGameLoop() {
         final Duration oneFrameAmount = Duration.millis(RELEASE_FAST_FPS);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmount, event -> {
-            // update actors
             gameWorldController.update();
-
-            // check for collision
-            gameWorldController.handleCollision();
-
-            // removed dead entity
         });
 
         // sets the game world's game loop (Timeline)

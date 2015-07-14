@@ -17,6 +17,10 @@ import java.util.Set;
 
 import static bm.viewcontroller.ViewConstants.FIELD_WORLD_SIZE;
 
+/**
+ * Class is responsible for drawing all objects in game, update them and put off from the game
+ * world pane.
+ */
 @Component
 public class GameWorldView {
 
@@ -39,15 +43,26 @@ public class GameWorldView {
      */
     public void initialize() {
         actorViews = new HashSet<>();
+        drawBackground();
+        drawSolidBlocks();
+        drawCrates();
+        drawActors();
+    }
 
-        actorViews.add(new PlayerActorViewController(playerActor));
-
+    /**
+     * Draw background.
+     */
+    private void drawBackground() {
         Rectangle levelRectangle = new Rectangle(gameWorld.getLevel().getWidth() * FIELD_WORLD_SIZE,
                 gameWorld.getLevel().getHeight() * FIELD_WORLD_SIZE);
         levelRectangle.setFill(new Color(0.8, 0.8, 0.8, 1.0));
-
         gameWorldController.getGameWorldPane().getChildren().add(levelRectangle);
+    }
 
+    /**
+     * Draw solid blocks.
+     */
+    private void drawSolidBlocks() {
         gameWorld.getLevel().immutableObstacleMap.forEach((apexPosition, immutableObstacle) -> {
             Rectangle rectangle = new Rectangle(immutableObstacle.getX() * FIELD_WORLD_SIZE,
                     immutableObstacle.getY() * FIELD_WORLD_SIZE,
@@ -58,10 +73,21 @@ public class GameWorldView {
             rectangle.setStrokeWidth(FIELD_WORLD_SIZE / 20);
             gameWorldController.getGameWorldPane().getChildren().add(rectangle);
         });
+    }
 
-        gameWorld.getLevel().mutableObstacleMap.forEach((apexPosition, mutableObstacle) -> {
-            gameWorldController.getGameWorldPane().getChildren().add(new BrickView(mutableObstacle));
-        });
+    /**
+     * Draw crates.
+     */
+    private void drawCrates() {
+        gameWorld.getLevel().mutableObstacleMap.forEach((apexPosition, mutableObstacle) ->
+                gameWorldController.getGameWorldPane().getChildren().add(new BrickView(mutableObstacle)));
+    }
+
+    /**
+     * Draw actors
+     */
+    private void drawActors() {
+        actorViews.add(new PlayerActorViewController(playerActor));
 
         actorViews.forEach(node -> {
             gameWorldController.getGameWorldPane().getChildren().add(node);
@@ -76,5 +102,4 @@ public class GameWorldView {
         actorViews.add(node);
         gameWorldController.getGameWorldPane().getChildren().add(node);
     }
-
 }

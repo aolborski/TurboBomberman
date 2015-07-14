@@ -9,13 +9,11 @@ public interface HasApexPosition {
 
   @NotNull
   default Integer getX() {
-
     return getPosition().getX();
   }
 
   @NotNull
   default Integer getY() {
-
     return getPosition().getY();
   }
 }

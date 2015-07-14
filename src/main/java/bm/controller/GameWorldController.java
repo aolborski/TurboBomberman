@@ -3,7 +3,6 @@ package bm.controller;
 import bm.model.ApexPosition;
 import bm.model.Bomb;
 import bm.model.GameWorld;
-import bm.model.actors.PlayerActor;
 import bm.view.GameWorldView;
 import bm.viewcontroller.BombViewController;
 import bm.viewcontroller.EnemyActorViewController;
@@ -21,8 +20,10 @@ import java.util.Set;
 import static bm.Constants.RANGE_OF_EXPLOSION;
 
 /**
- * Class which manages between model (GameWorld) and view. And the most important is that this
- * class has gameWorldPane.
+ * Class which manages between model (GameWorld) and view.
+ * <p/>
+ * The most important thing is gameWorldPane. For a while i think that this field should be in
+ * class GameWorldView but then in GameWorldPane.fxml written fx:controller="bm.view.GameWorldView".
  */
 @Component
 public class GameWorldController {
@@ -36,7 +37,7 @@ public class GameWorldController {
     @Autowired
     GameWorldView gameWorldView;
 
-    private static final Logger LOG = LoggerFactory.getLogger(PlayerActor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GameWorldController.class);
 
     @FXML
     public void initialize() {
@@ -44,9 +45,9 @@ public class GameWorldController {
     }
 
     /**
-     * Initialize game model (GameWorld) and game view (GameWorldView)
+     * Initialize game model (GameWorld) and game view (GameWorldView), add enemies to game.
      */
-    public void initializeGame() {
+    private void initializeGame() {
         gameWorld.initialize();
         gameWorldView.initialize();
 
@@ -54,13 +55,12 @@ public class GameWorldController {
                 gameWorldView.addActorView(new EnemyActorViewController(enemyActor)));
     }
 
-
     /**
-     * Update model and view.
+     * Update model and view. After that handle collision.
      */
     public void update() {
         gameWorld.update();
-//        gameWorldView.update();
+        handleCollision();
     }
 
     /**
@@ -79,55 +79,82 @@ public class GameWorldController {
      * <p/>
      * Fifthly when playerActor has collision with explosion i must kill him and stopped game.
      */
-    public void handleCollision() {
-
+    private void handleCollision() {
         gameWorld.getEnemies().forEach(enemyActor -> {
             Set<ApexPosition> apexPositionSet = gameWorld.getLevel().getAllObstaclesPositions();
 
             if (apexPositionSet.contains(enemyActor.getNextPosition())) {
                 LOG.debug("Collision detected");
-
                 enemyActor.movementVector.setOppositeDirection();
             }
         });
-
     }
-
 
     public Pane getGameWorldPane() {
         return gameWorldPane;
     }
 
-
+    /**
+     * Create bomb on apex position and add listener so that handle explosion in properly moment.
+     *
+     * @param apexPosition center position of explosion
+     */
     public void addBombToGame(@NotNull final ApexPosition apexPosition) {
         Bomb bomb = new Bomb(apexPosition);
         gameWorld.addBomb(bomb);
         gameWorldView.addActorView(new BombViewController(bomb));
-
-        //TODO: handleExplosion doesn't work properly
         bomb.isDestroyedProperty().addListener(observable -> handleExplosion(bomb.getPosition()));
     }
 
     /**
-     * kill all object in range of explosion.
+     * Destroy all object in range of explosion.
      *
      * @param apexPosition center position of explosion
      */
-    public void handleExplosion(@NotNull final ApexPosition apexPosition) {
+    private void handleExplosion(@NotNull final ApexPosition apexPosition) {
+        LOG.debug("handle explosion on apexPosition = " + apexPosition.toString());
+        Set<ApexPosition> apexPositionSet = setRangeOfExplosion(apexPosition);
+
+        apexPositionSet.forEach(apexPosition1 -> {
+            if (gameWorld.getLevel().mutableObstacleMap.containsKey(apexPosition1))
+                gameWorld.getLevel().mutableObstacleMap.get(apexPosition1).destroy();
+        });
+    }
+
+    /**
+     * @param apexPosition center position of explosion
+     * @return Set of apex position which contains in range of explosion
+     */
+    private Set<ApexPosition> setRangeOfExplosion(@NotNull final ApexPosition apexPosition) {
         Set<ApexPosition> apexPositionSet = new HashSet<>();
 
-        for (int i = -RANGE_OF_EXPLOSION; i <= RANGE_OF_EXPLOSION; i++) {
-            apexPositionSet.add(new ApexPosition(apexPosition.getX() + RANGE_OF_EXPLOSION,
-                    apexPosition.getY()));
-            apexPositionSet.add(new ApexPosition(apexPosition.getX(), apexPosition.getY() +
-                    RANGE_OF_EXPLOSION));
+        apexPositionSet.addAll(addRangeExplosionInOneDirection(apexPosition, 1, 0));
+        apexPositionSet.addAll(addRangeExplosionInOneDirection(apexPosition, 0, 1));
+        apexPositionSet.addAll(addRangeExplosionInOneDirection(apexPosition, -1, 0));
+        apexPositionSet.addAll(addRangeExplosionInOneDirection(apexPosition, 0, -1));
 
+        return apexPositionSet;
+    }
+
+    /**
+     * @param apexPosition center position of explosion
+     * @param x one of coordinates of explosion direction
+     * @param y one of coordinates of explosion direction
+     * @return Set of apex position which contains in explosion direction
+     */
+    private Set<ApexPosition> addRangeExplosionInOneDirection(@NotNull final ApexPosition
+                                                                      apexPosition, final int x, final int y) {
+        Set<ApexPosition> apexPositionSet = new HashSet<>();
+
+        for (int k = 0; k <= RANGE_OF_EXPLOSION; k++) {
+            ApexPosition apexPosition1 = new ApexPosition(apexPosition.getX() + k * x,
+                    apexPosition.getY() + k * y);
+            if (gameWorld.getLevel().immutableObstacleMap.containsKey(apexPosition1))
+                break;
+            else
+                apexPositionSet.add(apexPosition1);
         }
 
-        apexPositionSet.forEach(explosionPosition ->
-                gameWorld.getLevel().mutableObstacleMap.forEach((apexPosition2, mutableObstacle) -> {
-                    if (mutableObstacle.getPosition().equals(explosionPosition))
-                        gameWorld.getLevel().mutableObstacleMap.get(mutableObstacle.getPosition()).destroy();
-                }));
+        return apexPositionSet;
     }
 }

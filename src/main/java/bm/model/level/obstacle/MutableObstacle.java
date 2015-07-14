@@ -32,12 +32,8 @@ public class MutableObstacle implements Obstacle, Destroyable {
     isDestroyed.setValue(true);
   }
 
-  @Override
-  public boolean isDestroyed() {
-    return isDestroyed.get();
-  }
-
   @NotNull
+  @Override
   public BooleanProperty isDestroyedProperty() {
     return isDestroyed;
   }

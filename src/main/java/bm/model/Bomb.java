@@ -18,9 +18,6 @@ public class Bomb implements Explosive, HasApexPosition, Destroyable {
     @NotNull
     private final BooleanProperty isDestroyed;
 
-    @NotNull
-    private final Timeline timeline;
-
     private static final Logger LOG = LoggerFactory.getLogger(Bomb.class);
 
     /**
@@ -31,7 +28,7 @@ public class Bomb implements Explosive, HasApexPosition, Destroyable {
     public Bomb(@NotNull final ApexPosition position) {
         this.position = position;
         isDestroyed = new SimpleBooleanProperty(false);
-        timeline = new Timeline();
+        Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.getKeyFrames().add(new KeyFrame(this.explosionTimeMillis(), event -> {
             destroy();
@@ -41,6 +38,7 @@ public class Bomb implements Explosive, HasApexPosition, Destroyable {
     }
 
     @NotNull
+    @Override
     public BooleanProperty isDestroyedProperty() {
         return isDestroyed;
     }
@@ -61,10 +59,5 @@ public class Bomb implements Explosive, HasApexPosition, Destroyable {
     public void destroy() {
         LOG.debug("destroyed");
         isDestroyed.setValue(true);
-    }
-
-    @Override
-    public boolean isDestroyed() {
-        return isDestroyed.get();
     }
 }

@@ -1,8 +1,10 @@
 package bm.model.level.obstacle;
 
+import javafx.beans.property.BooleanProperty;
+
 public interface Destroyable {
 
-  void destroy();
+    void destroy();
 
-  boolean isDestroyed();
+    BooleanProperty isDestroyedProperty();
 }

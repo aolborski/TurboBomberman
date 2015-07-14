@@ -101,24 +101,34 @@ public class GameWorldController {
      */
     public void addBombToGame(@NotNull final ApexPosition apexPosition) {
         Bomb bomb = new Bomb(apexPosition);
-        gameWorld.addBomb(bomb);
+        gameWorld.bombs.add(bomb);
         gameWorldView.addActorView(new BombViewController(bomb));
-        bomb.isDestroyedProperty().addListener(observable -> handleExplosion(bomb.getPosition()));
+        bomb.isDestroyedProperty().addListener(observable -> handleExplosion(bomb));
     }
 
     /**
      * Destroy all object in range of explosion.
      *
-     * @param apexPosition center position of explosion
+     * @param bomb this is exploding
      */
-    private void handleExplosion(@NotNull final ApexPosition apexPosition) {
-        LOG.debug("handle explosion on apexPosition = " + apexPosition.toString());
-        Set<ApexPosition> apexPositionSet = setRangeOfExplosion(apexPosition);
+    private void handleExplosion(@NotNull final Bomb bomb) {
+        LOG.debug("handle explosion on apexPosition = " + bomb.getPosition().toString());
+        Set<ApexPosition> apexPositionSet = setRangeOfExplosion(bomb.getPosition());
 
         apexPositionSet.forEach(apexPosition1 -> {
             if (gameWorld.getLevel().mutableObstacleMap.containsKey(apexPosition1))
                 gameWorld.getLevel().mutableObstacleMap.get(apexPosition1).destroy();
+            else {
+                gameWorld.getEnemies().forEach(enemyActor -> {
+                    if (enemyActor.getPosition().equals(apexPosition1)) {
+                        enemyActor.destroy();
+                        gameWorld.removeEnemy(enemyActor);
+                    }
+                });
+            }
         });
+
+        gameWorld.bombs.remove(bomb);
     }
 
     /**

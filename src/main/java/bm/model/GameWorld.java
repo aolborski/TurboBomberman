@@ -7,8 +7,6 @@ import bm.model.level.Level;
 import bm.model.level.LevelFactory;
 import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,13 +30,10 @@ public class GameWorld {
 
     private Set<EnemyActor> enemies;
 
-    private LinkedList<Explosive> explosives;
-
-    private LinkedList<Bomb> bombs;
+    public LinkedList<Bomb> bombs;
 
     public void initialize() {
         enemies = new HashSet<>();
-        explosives = new LinkedList<>();
         bombs = new LinkedList<>();
 
         level = levelFactory.newLevel();
@@ -50,10 +45,6 @@ public class GameWorld {
 
     public Set<EnemyActor> getEnemies() {
         return enemies;
-    }
-
-    public LinkedList<Explosive> getExplosives() {
-        return explosives;
     }
 
     @NotNull
@@ -75,14 +66,18 @@ public class GameWorld {
 
         playerActor.move();
         enemies.forEach(Movable::move);
-
-
-//    playerActor.move();
-//    enemies.forEach(enemyActor -> enemyActor.move());
     }
 
+//
+//    public void addBomb(@NotNull final Bomb bomb) {
+//        bombs.add(bomb);
+//    }
+//
+//    public void removeBomb(@NotNull final Bomb bomb) {
+//        bombs.remove(bomb);
+//    }
 
-    public void addBomb(@NotNull final Bomb bomb) {
-        bombs.add(bomb);
+    public void removeEnemy(@NotNull final EnemyActor enemyActor) {
+        enemies.remove(enemyActor);
     }
 }

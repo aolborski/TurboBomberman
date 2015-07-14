@@ -50,6 +50,14 @@ public class GameWorldView {
     }
 
     /**
+     * @param node actor sprite
+     */
+    public void addActorView(@NotNull final Node node) {
+        actorViews.add(node);
+        gameWorldController.getGameWorldPane().getChildren().add(node);
+    }
+
+    /**
      * Draw background.
      */
     private void drawBackground() {
@@ -95,11 +103,4 @@ public class GameWorldView {
         });
     }
 
-    /**
-     * @param node actor sprite
-     */
-    public void addActorView(@NotNull final Node node) {
-        actorViews.add(node);
-        gameWorldController.getGameWorldPane().getChildren().add(node);
-    }
 }

@@ -17,7 +17,7 @@ public class PlayerActorViewController extends Group {
     @NotNull
     private ImageView imageView;
 
-    public PlayerActorViewController(@NotNull PlayerActor playerActor) {
+    public PlayerActorViewController(@NotNull final PlayerActor playerActor) {
 
         imageView = new ImageView(new Image("bm/images/Bomberman_White.png"));
         imageView.setFitHeight(FIELD_WORLD_SIZE);
@@ -33,6 +33,7 @@ public class PlayerActorViewController extends Group {
 
             MovementDirection movementDirection = MovementDirection.NONE;
 
+            //TODO: Fix this.
             /**
              * code == UP is equivalent with MovementVector.DOWN because i probably fucked something up
              * with directions between JavaFX gamePane and my gameWorld.

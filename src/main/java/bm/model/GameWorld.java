@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import static bm.model.actors.MovementDirection.LEFT;
 import static bm.model.actors.MovementDirection.RIGHT;
 
 
@@ -41,6 +42,8 @@ public class GameWorld {
         EnemyActor enemyActor = new EnemyActor(new Point2D(1, 1), RIGHT);
         enemies.add(enemyActor);
 
+        EnemyActor enemyActor1 = new EnemyActor(new Point2D(3, 3), LEFT);
+        enemies.add(enemyActor1);
     }
 
     public Set<EnemyActor> getEnemies() {
@@ -67,15 +70,6 @@ public class GameWorld {
         playerActor.move();
         enemies.forEach(Movable::move);
     }
-
-//
-//    public void addBomb(@NotNull final Bomb bomb) {
-//        bombs.add(bomb);
-//    }
-//
-//    public void removeBomb(@NotNull final Bomb bomb) {
-//        bombs.remove(bomb);
-//    }
 
     public void removeEnemy(@NotNull final EnemyActor enemyActor) {
         enemies.remove(enemyActor);

@@ -16,17 +16,13 @@ public class BombermanFXMLLoader extends FXMLLoader implements ApplicationContex
   private static final Logger LOG = LoggerFactory.getLogger(BombermanFXMLLoader.class);
 
   public BombermanFXMLLoader() throws MalformedURLException {
-
     super(BombermanFXMLLoader.class.getResource("/bm/ui/RootPane.fxml"));
   }
 
   @Override
   public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-
     LOG.debug("setting application context: {}", applicationContext);
-
     setControllerFactory(applicationContext::getBean);
-
   }
 }
 

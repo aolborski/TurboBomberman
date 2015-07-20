@@ -1,3 +1,4 @@
+
 package bm.viewcontroller;
 
 import bm.model.actors.MovementDirection;
@@ -14,23 +15,20 @@ import static javafx.scene.input.KeyCode.*;
 
 public class PlayerActorViewController extends Group {
 
-    @NotNull
-    private ImageView imageView;
-
     public PlayerActorViewController(@NotNull final PlayerActor playerActor) {
+        ImageView imageView = new ImageView(new Image("bm/images/Bomberman_White.png"));
+        imageView.setFitHeight(0.9 * FIELD_WORLD_SIZE);
+        imageView.setFitWidth(0.9 * FIELD_WORLD_SIZE);
 
-        imageView = new ImageView(new Image("bm/images/Bomberman_White.png"));
-        imageView.setFitHeight(FIELD_WORLD_SIZE);
-        imageView.setFitWidth(FIELD_WORLD_SIZE);
+        //TODO: Intersection
+        imageView.setId("playerActor");
 
         getChildren().add(imageView);
-        this.setFocusTraversable(true);
-        this.relocate(playerActor.getX() * FIELD_WORLD_SIZE, playerActor.getY() * FIELD_WORLD_SIZE);
+        setFocusTraversable(true);
+        relocate(playerActor.getX() * FIELD_WORLD_SIZE, playerActor.getY() * FIELD_WORLD_SIZE);
 
-        this.setOnKeyPressed(event -> {
-
+        setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-
             MovementDirection movementDirection = MovementDirection.NONE;
 
             //TODO: Fix this.
@@ -50,11 +48,10 @@ public class PlayerActorViewController extends Group {
                 playerActor.plant();
 
             playerActor.setMovementDirection(movementDirection);
-
             event.consume();
         });
 
-        this.setOnKeyReleased(event -> playerActor.setMovementDirection(NONE));
+        setOnKeyReleased(event -> playerActor.setMovementDirection(NONE));
 
         playerActor.positionProperty().addListener((observable, oldValue, newValue) -> {
             relocate(this.getLayoutX() + playerActor.getMovementVector().getX(),

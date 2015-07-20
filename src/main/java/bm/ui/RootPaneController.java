@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import static bm.ui.BmState.MENU;
 
+@SuppressWarnings("unused")
 @Component
 public class RootPaneController {
 

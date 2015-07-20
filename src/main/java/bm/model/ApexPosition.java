@@ -11,14 +11,12 @@ public class ApexPosition {
   private final Integer y;
 
   public ApexPosition(@NotNull Integer x, @NotNull Integer y) {
-
     this.x = x;
     this.y = y;
   }
 
   @Override
   public boolean equals(Object o) {
-
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
@@ -30,7 +28,6 @@ public class ApexPosition {
 
   @Override
   public int hashCode() {
-
     int result = x.hashCode();
     result = 31 * result + y.hashCode();
     return result;
@@ -38,19 +35,16 @@ public class ApexPosition {
 
   @NotNull
   public Integer getX() {
-
     return x;
   }
 
   @NotNull
   public Integer getY() {
-
     return y;
   }
 
   @Override
   public String toString() {
-
     return String.format("ApexPosition{x=%d, y=%d}", x, y);
   }
 }

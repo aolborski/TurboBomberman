@@ -10,7 +10,7 @@ import static bm.Constants.RELEASE_FAST_FPS;
 import static javafx.animation.Animation.INDEFINITE;
 
 /**
- * Class GameLoop is responsible for build and set game loop and start it.
+ * Class GameLoop is responsible for building and setting game loop and starting.
  */
 @Component
 public class GameLoop {
@@ -31,7 +31,7 @@ public class GameLoop {
     }
 
     /**
-     * Builds and sets the game loop ready to be started
+     * Builds and sets the game loop and is ready to start
      */
     private void buildAndSetGameLoop() {
         final Duration oneFrameAmount = Duration.millis(RELEASE_FAST_FPS);

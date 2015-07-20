@@ -12,11 +12,6 @@ public class Constants {
     public static final Double ACTOR_SPRITE_SIZE = 30.0;
 
     /**
-     * Size of strip
-     */
-    public static final int SIZE_OF_STRIP = 11;
-
-    /**
      * Debug fast Frame Per Seconds
      */
     public static final Double DEBUG_FAST_FPS = 1000.0 / 10.0;

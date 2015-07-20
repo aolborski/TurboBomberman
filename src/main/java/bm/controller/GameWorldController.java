@@ -23,7 +23,8 @@ import static bm.Constants.RANGE_OF_EXPLOSION;
  * Class which manages between model (GameWorld) and view.
  * <p/>
  * The most important thing is gameWorldPane. For a while i think that this field should be in
- * class GameWorldView but then in GameWorldPane.fxml written fx:controller="bm.view.GameWorldView".
+ * class GameWorldView but then in GameWorldPane.fxml had been written fx:controller="bm.view
+ * .GameWorldView".
  */
 @Component
 public class GameWorldController {
@@ -60,6 +61,7 @@ public class GameWorldController {
      */
     public void update() {
         gameWorld.update();
+        gameWorldView.update();
         handleCollision();
     }
 
